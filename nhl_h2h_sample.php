@@ -25,21 +25,27 @@ echo $forwards[1] ;
    // 	}
 }
 	
-	function randomselect(){
-		$query1="SELECT nhl_id as rand1 FROM nhl_player ORDER BY RAND() LIMIT 1";
-		$query2="SELECT nhl_id as rand2 FROM nhl_player ORDER BY RAND() LIMIT 1";
+	function randomselect($mi_conn){
+
+		$query1 = "SELECT nhl_id as rand1 FROM nhl_player ORDER BY RAND() LIMIT 1";
+		$query2 = "SELECT nhl_id as rand2 FROM nhl_player ORDER BY RAND() LIMIT 1";
 		
-		$rs1 = $mysqli->query($query1) or die($mysqli->error.__LINE__);
-		$rs2 = $mysqli->query($query2) or die($mysqli->error.__LINE__);	
+		$rs1= mysqli_query($mi_conn,$query1) or die('Could not look up user information; ' . mysqli_error($mi_conn));
+		$rs2= mysqli_query($mi_conn,$query2) or die('Could not look up user information; ' . mysqli_error($mi_conn));
+
+//		$rs1 = $mysqli->query($query1) or die($mysqli->error.__LINE__);
+//		$rs2 = $mysqli->query($query2) or die($mysqli->error.__LINE__);	
 		
 		$p1 = $rs1->fetch_assoc();
 		$p2 = $rs2->fetch_assoc();
 		
 		echo $p1['rand1'] ;
 		echo $p2['rand2'] ;
+		echo "this is cole" ;
+		echo $p1['player_name1'] ;
 	}
 
-randomselect();
+randomselect($mi_conn);
 
 	function checkRand(){
 		if($p1!=$p2) {
@@ -48,10 +54,11 @@ randomselect();
 			echo $sim ;
 		} else {
 			
-		randomselect();
-	similarity();
-			echo "second try!";
-			echo $sim ;
+		randomselect($mi_conn);
+		
+				similarity();
+					echo "second try!";
+					echo $sim ;
 		}
 	}
 

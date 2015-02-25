@@ -4,32 +4,34 @@
 	//Create the select query, use sql to pulll 2 players for head to head
 	//index & submit will select to random player numbers, these are displayed in the PHP
 
-	$player1 = (int) $_GET['p1'];
-	$player2 = (int) $_GET['p2'];
+//	$player1 = (int) $_GET['p1'];
+//	$player2 = (int) $_GET['p2'];
 
 
-	$query1 ="SELECT *, player_name as player_name1, team as player_team1, pos as player_position1
-			 FROM nhl_player
-			 where nhl_id=$player1";
-	$query2 ="SELECT *, player_name as player_name2, team as player_team2, pos as player_position2
-			 FROM nhl_player
-			 where nhl_id=$player2";
-	//Get results
-	$result1 = $mysqli->query($query1) or die($mysqli->error.__LINE__);
-	$result2 = $mysqli->query($query2) or die($mysqli->error.__LINE__);
-
-	$echo1 = $result1->fetch_assoc();
-	$echo2 = $result2->fetch_assoc();
+//	$query1 ="SELECT *, player_name as player_name1, team as player_team1, pos as player_position1
+//			 FROM nhl_player
+//			 where nhl_id=$player1";
+//	$query2 ="SELECT *, player_name as player_name2, team as player_team2, pos as player_position2
+//			 FROM nhl_player
+//			 where nhl_id=$player2";
+//	//Get results
+//	$result1 = $mysqli->query($query1) or die($mysqli->error.__LINE__);
+//	$result2 = $mysqli->query($query2) or die($mysqli->error.__LINE__);
+//
+//	$echo1 = $result1->fetch_assoc();
+//	$echo2 = $result2->fetch_assoc();
 	
-	if(!isset($_GET['p1'])){
-		echo "r1";
-		$result1 = "NULL";
-	}
-	if(!isset($_GET['p2'])){
-		echo "r2";
-		$result2 = "NULL";
-	}  
-?>
+//	echo $echo1[0] ;
+//	echo $echo1[1] ;
+
+//	if(!isset($_GET['p1'])){
+//		echo "r1";
+//		$result1 = "NULL";
+//	}
+//	if(!isset($_GET['p2'])){
+//		echo "r2";
+//		$result2 = "NULL";
+//	}  ?>
 
 <!doctype html>
 <html>

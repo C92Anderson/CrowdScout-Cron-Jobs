@@ -5,32 +5,33 @@
 	//Create the select query, use sql to pull 2 players for head to head
 	//index & submit will select to random player numbers, these are displayed in the PHP
 
-	randomselect();
-	
+	randomselect($mi_conn);
+	checkRand();
+
 	$player1 = (int) $_GET['p1'];
 	$player2 = (int) $_GET['p2'];
 
 
-	$query1 ="SELECT player_name as player_name1, pos as player_position1, team as player_team1, round(DATEDIFF(current_date(),dob)/365.25,1) as age1
-			 FROM nhl_player
-			 where nhl_id=$player1";
-	$query2 ="SELECT player_name as player_name2, pos as player_position2, team as player_team2, round(DATEDIFF(current_date(),dob)/365.25,1) as age2
-			 FROM nhl_player
-			 where nhl_id=$player2";
+//	$query1 ="SELECT player_name as player_name1, pos as player_position1, team as player_team1, round(DATEDIFF(current_date(),dob)/365.25,1) as age1
+//			 FROM nhl_player
+//			 where nhl_id=$player1";
+//	$query2 ="SELECT player_name as player_name2, pos as player_position2, team as player_team2, round(DATEDIFF(current_date(),dob)/365.25,1) as age2
+//			 FROM nhl_player
+//			 where nhl_id=$player2";
 
 	//Get results
-	$result1 = $mysqli->query($query1) or die($mysqli->error.__LINE__);
-	$result2 = $mysqli->query($query2) or die($mysqli->error.__LINE__);
+//	$result1 = $mysqli->query($query1) or die($mysqli->error.__LINE__);
+//	$result2 = $mysqli->query($query2) or die($mysqli->error.__LINE__);
 
-	$echo1 = $result1->fetch_assoc();
-	$echo2 = $result2->fetch_assoc();
+//	$echo1 = $result1->fetch_assoc();
+//	$echo2 = $result2->fetch_assoc();
 
 
-	if(!isset($_GET['p1']) || !isset($_GET['p2'])){
-		$echo1['player_name1'] = "NULL";
-		$echo2['player_name2'] = "NULL";
-		$msg_error="Sorry, there was an error. Please try again!";
-	}  
+//	if(!isset($_GET['p1']) || !isset($_GET['p2'])){
+//		$echo1['player_name1'] = "NULL";
+//		$echo2['player_name2'] = "NULL";
+//		$msg_error="Sorry, there was an error. Please try again!";
+//	}  
 
 
 	//if($_POST){
@@ -58,7 +59,7 @@
 	
 	//}
 
-	?>
+//	?>
 
 <html>
 	<head>

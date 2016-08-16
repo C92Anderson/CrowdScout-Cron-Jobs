@@ -7,7 +7,9 @@
 		die("Connection failed: " . $conn->connect_error);
 	} 
 
-		$hockey_topcounts = $conn->query("SELECT player_id, player_name, list, elo, elo2
+		$hockey_topcounts = $conn->query("SELECT player_id, player_name, list, elo, elo2, (elo - monthly_min_elo) / ( monthly_max_elo - monthly_min_elo ) *100 AS score
+FROM (
+SELECT player_id, player_name, list, elo, elo2
 			FROM
 
 			(SELECT a.player_id, a.player_name, 'FWDTOP10' as list, elo, round(elo,0) as elo2
@@ -19,7 +21,7 @@
          		and a.`order`=b.last_game
 		           LEFT JOIN hockey_roster_v1 as c
 		            on a.player_id=c.nhl_id
-				WHERE pos IN ('C',  'LW',  'RW',  'W')
+				WHERE pos IN ('C',  'LW',  'RW',  'W', 'L', 'R')
 				order by elo desc, last_game desc
 				limit 10) R
 
@@ -111,7 +113,13 @@
 				GROUP BY 1,2)) as x
 				Group by player_id, player_name
 				order by elo asc, last_game desc
-				limit 10)") or die($conn->error.__LINE__);
+				limit 10)) A, 
+
+				(SELECT MAX( elo ) AS monthly_max_elo, MIN( elo ) AS monthly_min_elo
+											FROM  `hockey_elo_v1` A
+											WHERE CAST( game_ts AS DATE ) >= ( CURRENT_DATE - INTERVAL  '90' DAY ) 
+											
+											) B") or die($conn->error.__LINE__);
 
 			if ($hockey_topcounts->num_rows > 0) {
 					    // output data of each row
@@ -124,6 +132,7 @@
 							$elo = $row['elo'];
 							$elo2 = $row['elo2'];
 							$class = $row['list'];
+							$score = $row['score'];
 		
 						
 						$insert = $conn->query("INSERT INTO  `nhl_all`.`hockey_topcounts` (
@@ -131,8 +140,9 @@
 						`player_name` ,
 						`elo` ,
 						`elo2`,
-						`class`)
-						VALUES ('" . $cs_id . "','" . $player_name . "','" . $elo . "','" . $elo2 . "','" . $class . "')");
+						`class`,
+						`score`)
+						VALUES ('" . $cs_id . "','" . $player_name . "','" . $elo . "','" . $elo2 . "','" . $class . "','" . $score . "')");
 
 						}
 				}

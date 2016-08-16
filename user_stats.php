@@ -8,9 +8,13 @@
 	} 
 
 //user stats
+
+
 $user_stats = $conn->query("SELECT A.*,
 				(1 / ( 1 + POW( 10, (((hockey_fav_strength - 1500) / (MAX_HOCKEY - 1500)) - ((hockey_bash_strength - 1500) / (MIN_HOCKEY - 1500))) * 1.5) ) ) + (sqrt(hockey_game_count) / 100) as hockey_scout_strength,
-				(1 / ( 1 + POW( 10, (((football_fav_strength - 1500) / (MAX_FOOTBALL - 1500)) - ((football_bash_strength - 1500) / (MIN_FOOTBALL - 1500))) * 1.5) ) ) + (sqrt(football_game_count) / 100) as football_scout_strength
+				
+				2 + (1 / ( 1 + POW( 10, (((football_fav_strength - 1500) / (MAX_FOOTBALL - 1500)) - ((football_bash_strength - 1500) / (MIN_FOOTBALL - 1500))) * 1.5) ) ) + (sqrt(football_game_count) / 100) 
+				 as football_scout_strength
 
 
 

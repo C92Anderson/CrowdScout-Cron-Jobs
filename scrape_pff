@@ -1,0 +1,29 @@
+from lxml import html
+import requests
+
+import pandas as pd
+import pymysql as pg
+import numpy as np
+
+#for x in position:
+#    str = '"C:\Users\colander1\Documents\CWA\PFFRatings.xlsx",sheetname="' + x + '"'
+#    pd.read_excel(str)
+#    pd.read_excel("C:\Users\colander1\Documents\CWA\PFFRatings.xlsx",sheetname=%s) % (x)
+
+PFF_Passers = pd.read_excel("C:\Users\colander1\Documents\CWA\PFFRatings.xlsx",sheetname="Passers")
+PFF_Runners = pd.read_excel("C:\Users\colander1\Documents\CWA\PFFRatings.xlsx",sheetname="Runners")
+PFF_Receivers = pd.read_excel("C:\Users\colander1\Documents\CWA\PFFRatings.xlsx",sheetname="Receivers")
+PFF_Blockers = pd.read_excel("C:\Users\colander1\Documents\CWA\PFFRatings.xlsx",sheetname="Blockers")
+PFF_Secondary = pd.read_excel("C:\Users\colander1\Documents\CWA\PFFRatings.xlsx",sheetname="Secondary")
+PFF_Backers = pd.read_excel("C:\Users\colander1\Documents\CWA\PFFRatings.xlsx",sheetname="Backers")
+PFF_Lineman = pd.read_excel("C:\Users\colander1\Documents\CWA\PFFRatings.xlsx",sheetname="Lineman")
+
+
+
+position = ['PFF_Passers','PFF_Runners','PFF_Receivers','PFF_Blockers','PFF_Secondary','PFF_Backers','PFF_Lineman']
+
+conn = pg.connect(host='mysql.crowdscoutsports.com', user='ca_elo_games', password='cprice31!',
+                   port=3306, db='nhl_all')
+
+for x in Position:
+    x.to_sql(con=conn, name='x', if_exists='replace', flavor='mysql')

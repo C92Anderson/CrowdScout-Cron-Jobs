@@ -1,14 +1,17 @@
 <?php 
 
-//TOP TOP HOCKEY PLAYERS
+//TOP FOOTBALL PLAYERS
 	$conn = new mysqli("mysql.crowd-scout.net", "ca_elo_games", "cprice31!","football_all");
 	// Check connection
 	if ($conn->connect_error) {
 		die("Connection failed: " . $conn->connect_error);
 	} 
 		 
-		$football_toplists = $conn->query("SELECT cs_id, player_name, class, elo, elo2
-			FROM 
+		$football_toplists = $conn->query("SELECT cs_id, player_name, class, elo, elo2, (elo - monthly_min_elo) / ( monthly_max_elo - monthly_min_elo ) *100 AS score
+			FROM (
+			SELECT cs_id, player_name, class, elo, elo2
+			FROM
+ 
 			(SELECT a.cs_id, c.player_name, 'QB' as class, elo, round(elo,0) as elo2
 				FROM `football_elo_v1` as a
 				INNER JOIN (SELECT cs_id, max(`order`) as last_game
@@ -156,7 +159,11 @@
 			GROUP BY 1,2)) as x
 			Group by cs_id, player_name
 			order by elo asc
-			limit 10)") or die($conn->error.__LINE__);
+			limit 10)) A, 
+
+				(SELECT MAX( elo ) AS monthly_max_elo, MIN( elo ) AS monthly_min_elo
+											FROM  `football_elo_v1` A
+											WHERE CAST( game_ts AS DATE ) >= ( CURRENT_DATE - INTERVAL  '90' DAY )) B") or die($conn->error.__LINE__);
 
 
 				if ($football_toplists->num_rows > 0) {
@@ -170,14 +177,17 @@
 							$elo = $row['elo'];
 							$elo2 = $row['elo2'];
 							$class = $row['class'];	
+							$score = $row['score'];
+		
 
 						$insert = $conn->query("INSERT INTO `football_all`.`football_toplists` (
 						`cs_id`,
 						`player_name` ,
 						`class`,
-						`elo` ,
-						`elo2`)
-						VALUES ('" . $cs_id . "','" . $player_name . "','" . $class . "','" . $elo . "','" . $elo2 . "')");
+						`elo`,
+						`elo2`,
+						`score`)
+						VALUES ('" . $cs_id . "','" . $player_name . "','" . $class . "','" . $elo . "','" . $elo2 . "','" . $score . "')");
 
 						}
 				}		
